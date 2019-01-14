@@ -1,7 +1,7 @@
 // Copyright (c) 2017-present Mattermost, Inc. All Rights Reserved.
 // See License.txt for license information.
 
-package app
+package utils
 
 // LTI Tools from: https://github.com/jordic/lti
 // OAuth Tools from: github.com/daemonl/go_oauth
@@ -136,7 +136,7 @@ func (p *Provider) Sign() (string, error) {
 	}
 	p.Add("oauth_consumer_key", p.ConsumerKey)
 
-	signature, err := Sign(p.values, p.URL, p.Method, p.key)
+	signature, err := SignLTIRequest(p.values, p.URL, p.Method, p.key)
 	if err == nil {
 		p.Add("oauth_signature", signature)
 	}
@@ -159,7 +159,7 @@ func (p *Provider) IsValid(r *http.Request) (bool, error) {
 	}
 	signature := r.Form.Get("oauth_signature")
 	// log.Printf("REQuest URLS %s", r.RequestURI)
-	sig, err := Sign(r.Form, p.URL, r.Method, p.key)
+	sig, err := SignLTIRequest(r.Form, p.URL, r.Method, p.key)
 	if err != nil {
 		return false, err
 	}
@@ -169,10 +169,10 @@ func (p *Provider) IsValid(r *http.Request) (bool, error) {
 	return false, fmt.Errorf("invalid signature, %s, expected %s", sig, signature)
 }
 
-// Sign a lti request using HMAC containing a u, url, a http method,
+// SignLTIRequest - sign an lti request using HMAC containing a u, url, a http method,
 // and a secret. ts is a tokenSecret field from the oauth spec,
 // that in this case must be empty.
-func Sign(form url.Values, u, method string, key []byte) (string, error) {
+func SignLTIRequest(form url.Values, u, method string, key []byte) (string, error) {
 	baseString, err := getBaseString(method, u, form)
 	if err != nil {
 		return "", err
@@ -230,7 +230,7 @@ func getBaseString(m, u string, form url.Values) (string, error) {
 		}
 	}
 
-	str, err := GetBaseString(m, u, kv)
+	str, err := GetOAuthBaseString(m, u, kv)
 	if err != nil {
 		return "", err
 	}
@@ -239,8 +239,8 @@ func getBaseString(m, u string, form url.Values) (string, error) {
 	return str, nil
 }
 
-// GetBaseString returns the 'Signature Base String', which is to be encoded as the signature
-func GetBaseString(method, requestUrl string, allParameters []KV) (string, error) {
+// GetOAuthBaseString returns the 'Signature Base String', which is to be encoded as the signature
+func GetOAuthBaseString(method, requestUrl string, allParameters []KV) (string, error) {
 
 	for i, kv := range allParameters {
 		allParameters[i].Val = url.QueryEscape(kv.Val)

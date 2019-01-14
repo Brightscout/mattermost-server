@@ -4,8 +4,9 @@ import (
 	"fmt"
 	"net/http"
 
-	"github.com/mattermost/mattermost-server/app"
 	"github.com/mattermost/mattermost-server/mlog"
+	"github.com/mattermost/mattermost-server/model"
+	"github.com/mattermost/mattermost-server/utils"
 )
 
 func (w *Web) InitLti() {
@@ -13,6 +14,10 @@ func (w *Web) InitLti() {
 }
 
 func loginWithLti(c *Context, w http.ResponseWriter, r *http.Request) {
+	if !c.App.Config().LTISettings.Enable {
+		c.Err =  model.NewAppError("loginWithLti", "api.lti.disabled.app_error", nil, "", http.StatusNotImplemented)
+		return
+	}
 
 	// Validate request
 	lmss := c.App.Config().LTISettings.LMSs
@@ -26,12 +31,12 @@ func loginWithLti(c *Context, w http.ResponseWriter, r *http.Request) {
 		}
 	}
 
-	p := app.NewProvider(ltiConsumerSecret, fmt.Sprintf("%s%s", c.GetSiteURLHeader(), c.Path))
+	p := utils.NewProvider(ltiConsumerSecret, fmt.Sprintf("%s%s", c.GetSiteURLHeader(), c.Path))
 	p.ConsumerKey = ltiConsumerKey
 	if ok, err := p.IsValid(r); err != nil || ok == false {
 		// TODO: update this based on how we handle request validation error
-		fmt.Fprintf(w, "Invalid request...")
-		mlog.Error("Invalid request: " + err.Error())
+		mlog.Error("Invalid LTI request: " + err.Error())
+		c.Err =  model.NewAppError("loginWithLti", "api.lti.validate.app_error", nil, "", http.StatusNotImplemented)
 		return
 	}
 

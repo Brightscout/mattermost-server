@@ -1205,6 +1205,14 @@
     "translation": "New format for the client license is not supported yet. Please specify format=old in the query string."
   },
   {
+    "id": "api.lti.disabled.app_error",
+    "translation": "Login with LTI has been disabled by the system admin."
+  },
+  {
+    "id": "api.lti.validate.app_error",
+    "translation": "An error occurred while validating the response from the LTI Provider. Please contact your System Administrator."
+  },
+  {
     "id": "api.oauth.allow_oauth.redirect_callback.app_error",
     "translation": "invalid_request: Supplied redirect_uri did not match registered callback_url"
   },
