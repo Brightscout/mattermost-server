@@ -29,6 +29,7 @@ func loginWithLti(c *Context, w http.ResponseWriter, r *http.Request) {
 	p := app.NewProvider(ltiConsumerSecret, fmt.Sprintf("%s%s", c.GetSiteURLHeader(), c.Path))
 	p.ConsumerKey = ltiConsumerKey
 	if ok, err := p.IsValid(r); err != nil || ok == false {
+		// TODO: update this based on how we handle request validation error
 		fmt.Fprintf(w, "Invalid request...")
 		mlog.Error("Invalid request: " + err.Error())
 		return
