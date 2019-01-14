@@ -357,16 +357,16 @@
                 "Type": "edx",
                 "Oauth": {
                     "ConsumerKey": "edx-appsembler-test_5345",
-                    "ConsumerSecret": "appsembler secret"
+                    "ConsumerSecret": "secret"
                 },
                 "UserChannels": {
                     "Type": "custom-properties",
                     "ChannelList":
                     [
                         {
-                            "CourseType": "plg", // This will be a query param to look up the redirect_to channel
-                            "NameProperty": "custom_cohort_name", // The param in the LTI launch data to find the channel
-                            "IdProperty": "custom_cohort_id" // This is unique id that we can use as the channel url
+                            "CourseType": "plg",
+                            "NameProperty": "custom_cohort_name",
+                            "IdProperty": "custom_cohort_id"
                         },
                         {
                             "CourseType": "capstone",

@@ -9,8 +9,6 @@ import (
 )
 
 func (w *Web) InitLti() {
-
-	mlog.Info("Initializing web LTI")
 	w.MainRouter.Handle("/login/lti", w.NewHandler(loginWithLti)).Methods("POST")
 }
 

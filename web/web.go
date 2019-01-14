@@ -31,6 +31,7 @@ func NewWeb(a *app.App, root *mux.Router) *Web {
 		MainRouter: root,
 	}
 
+	// Since these endpoints are API version independent, they are defined here instead of api4 package
 	web.InitWebhooks()
 	web.InitSaml()
 	web.InitLti()
