@@ -326,6 +326,58 @@
         "LoginButtonBorderColor": "",
         "LoginButtonTextColor": ""
     },
+    "LtiSettings": {
+        "Enable": false,
+        "Lmss": [
+            {
+                "Name": "Emeritus",
+                "Type": "canvas",
+                "Oauth": {
+                    "ConsumerKey": "canvas-emeritus_5863",
+                    "ConsumerSecret": "emeritus secret"
+                },
+                "UserChannels": {
+                    "Type": "emeritus-group",
+                    "AuthorizationToken": "7357~ROt7SAzB9gjdBQQA2lI0JfpfZ4ckTxd0CYZIZwzM8qMFGjiz4SQILBObJ3NuFDuR",
+                    "ChannelList":
+                    [
+                        {
+                            "CourseType": "plg",
+                            "NameRegEx": "^riff_PLG_"
+                        },
+                        {
+                            "CourseType": "capstone",
+                            "NameRegEx": "^riff_Team_"
+                        }
+                    ]
+                }
+            },
+            {
+                "Name": "Appsembler",
+                "Type": "edx",
+                "Oauth": {
+                    "ConsumerKey": "edx-appsembler-test_5345",
+                    "ConsumerSecret": "appsembler secret"
+                },
+                "UserChannels": {
+                    "Type": "custom-properties",
+                    "ChannelList":
+                    [
+                        {
+                            "CourseType": "plg", // This will be a query param to look up the redirect_to channel
+                            "NameProperty": "custom_cohort_name", // The param in the LTI launch data to find the channel
+                            "IdProperty": "custom_cohort_id" // This is unique id that we can use as the channel url
+                        },
+                        {
+                            "CourseType": "capstone",
+                            "NameProperty": "custom_team_name",
+                            "IdProperty": "custom_team_id"
+                        }
+                    ]
+                }
+            }
+        ]
+    },
     "NativeAppSettings": {
         "AppDownloadLink": "https://about.mattermost.com/downloads/",
         "AndroidAppDownloadLink": "https://about.mattermost.com/mattermost-android-app/",

@@ -33,6 +33,7 @@ func NewWeb(a *app.App, root *mux.Router) *Web {
 
 	web.InitWebhooks()
 	web.InitSaml()
+	web.InitLti()
 	web.InitStatic()
 
 	return web

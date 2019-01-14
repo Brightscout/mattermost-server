@@ -633,6 +633,29 @@ func (s *AnalyticsSettings) SetDefaults() {
 	}
 }
 
+type LMSOAuthSettings struct {
+	ConsumerKey    string
+	ConsumerSecret string
+}
+
+type LMSUserChannelsSettings struct {
+	Type               string
+	AuthorizationToken *string
+	ChannelList        []map[string]string
+}
+
+type LMSSettings struct {
+	Name         string
+	Type         string
+	OAuth        LMSOAuthSettings
+	UserChannels LMSUserChannelsSettings
+}
+
+type LTISettings struct {
+	Enable bool
+	LMSs   []LMSSettings
+}
+
 type SSOSettings struct {
 	Enable          bool
 	Secret          string
@@ -1947,6 +1970,7 @@ type Config struct {
 	SupportSettings       SupportSettings
 	AnnouncementSettings  AnnouncementSettings
 	ThemeSettings         ThemeSettings
+	LTISettings           LTISettings
 	GitLabSettings        SSOSettings
 	GoogleSettings        SSOSettings
 	Office365Settings     SSOSettings
