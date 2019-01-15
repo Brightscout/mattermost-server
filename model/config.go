@@ -14,6 +14,8 @@ import (
 	"strconv"
 	"strings"
 	"time"
+
+	"github.com/mattermost/mattermost-server/mlog"
 )
 
 const (
@@ -172,6 +174,8 @@ const (
 
 	CLIENT_SIDE_CERT_CHECK_PRIMARY_AUTH   = "primary"
 	CLIENT_SIDE_CERT_CHECK_SECONDARY_AUTH = "secondary"
+
+	EDX_LMS_TYPE = "edx"
 )
 
 type ServiceSettings struct {
@@ -638,22 +642,52 @@ type LMSOAuthSettings struct {
 	ConsumerSecret string
 }
 
-type LMSUserChannelsSettings struct {
-	Type               string
-	AuthorizationToken *string
-	ChannelList        []map[string]string
+type LMSSettings struct {
+	Name  string
+	Type  string
+	OAuth LMSOAuthSettings
 }
 
-type LMSSettings struct {
-	Name         string
-	Type         string
-	OAuth        LMSOAuthSettings
-	UserChannels LMSUserChannelsSettings
+type EdxChannel struct {
+	CourseType   string
+	NameProperty string
+	IDProperty   string
+}
+
+type EdxUserChannelsSettings struct {
+	Type        string
+	ChannelList []EdxChannel
+}
+
+type EdxLMSSettings struct {
+	Name  string
+	Type  string
+	OAuth LMSOAuthSettings
+	UserChannels EdxUserChannelsSettings
 }
 
 type LTISettings struct {
 	Enable bool
-	LMSs   []LMSSettings
+	LMSs   []interface{}
+}
+
+// GetKnownLMSs can be used to extract a slice of known LMSs from LTI settings
+// Currently it supports Edx
+func (l *LTISettings) GetKnownLMSs() []interface{} {
+	var ret []interface{}
+	for _, lms := range l.LMSs {
+		enc, err := json.Marshal(lms)
+		if err != nil {
+			mlog.Error("Error in json.Marshal: " + err.Error())
+			continue
+		}
+		var decodedEdx EdxLMSSettings
+		if json.Unmarshal(enc, &decodedEdx) == nil && decodedEdx.Type == EDX_LMS_TYPE {
+			ret = append(ret, decodedEdx)
+			continue
+		}
+	}
+	return ret
 }
 
 type SSOSettings struct {

@@ -24,10 +24,12 @@ func loginWithLti(c *Context, w http.ResponseWriter, r *http.Request) {
 	ltiConsumerKey := r.FormValue("oauth_consumer_key")
 	var ltiConsumerSecret string
 
-	for _, lms := range lmss {
-		if lms.OAuth.ConsumerKey == ltiConsumerKey {
-			ltiConsumerSecret = lms.OAuth.ConsumerSecret
-			break
+	for _, val := range lmss {
+		if lms, ok := val.(model.EdxLMSSettings); ok {
+			if lms.OAuth.ConsumerKey == ltiConsumerKey {
+				ltiConsumerSecret = lms.OAuth.ConsumerSecret
+				break
+			}
 		}
 	}
 
