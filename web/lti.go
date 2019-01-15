@@ -20,7 +20,7 @@ func loginWithLti(c *Context, w http.ResponseWriter, r *http.Request) {
 	}
 
 	// Validate request
-	lmss := c.App.Config().LTISettings.LMSs
+	lmss := c.App.Config().LTISettings.GetKnownLMSs()
 	ltiConsumerKey := r.FormValue("oauth_consumer_key")
 	var ltiConsumerSecret string
 

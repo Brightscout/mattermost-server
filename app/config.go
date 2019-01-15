@@ -64,8 +64,6 @@ func (a *App) LoadConfig(configFile string) *model.AppError {
 
 	a.configFile = configPath
 
-	cfg.LTISettings.LMSs = cfg.LTISettings.GetKnownLMSs()
-
 	a.config.Store(cfg)
 	a.envConfig = envConfig
 

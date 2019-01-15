@@ -681,10 +681,13 @@ func (l *LTISettings) GetKnownLMSs() []interface{} {
 			mlog.Error("Error in json.Marshal: " + err.Error())
 			continue
 		}
-		var decodedEdx EdxLMSSettings
-		if json.Unmarshal(enc, &decodedEdx) == nil && decodedEdx.Type == EDX_LMS_TYPE {
-			ret = append(ret, decodedEdx)
-			continue
+		switch lms.(map[string]interface{})["Type"].(string) {
+		case EDX_LMS_TYPE:
+			var decodedEdx EdxLMSSettings
+			if json.Unmarshal(enc, &decodedEdx) == nil {
+				ret = append(ret, decodedEdx)
+				continue
+			}
 		}
 	}
 	return ret
