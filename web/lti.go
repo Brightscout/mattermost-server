@@ -35,6 +35,7 @@ func loginWithLti(c *Context, w http.ResponseWriter, r *http.Request) {
 	}
 
 	if ltiConsumerSecret == "" {
+		mlog.Error("Client secret not found for consumer key: " + ltiConsumerKey)
 		c.Err = model.NewAppError("loginWithLti", "api.lti.client_secret.app_error", nil, "", http.StatusNotImplemented)
 		return
 	}
