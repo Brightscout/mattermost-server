@@ -1213,6 +1213,10 @@
     "translation": "An error occurred while validating the response from the LTI Provider. Please contact your System Administrator."
   },
   {
+    "id": "api.lti.client_secret.app_error",
+    "translation": "LTI login was unsuccessful because the Client Secret was not found. Please contact your System Administrator."
+  },
+  {
     "id": "api.oauth.allow_oauth.redirect_callback.app_error",
     "translation": "invalid_request: Supplied redirect_uri did not match registered callback_url"
   },
