@@ -1,12 +1,12 @@
 package utils
 
 import (
+	"fmt"
 	"log"
 	"net/http"
 	"net/url"
 	"strings"
 	"testing"
-	"fmt"
 )
 
 func TestCreateRequest(t *testing.T) {
@@ -16,7 +16,7 @@ func TestCreateRequest(t *testing.T) {
 		URL:         "http://urltest.com/",
 		ConsumerKey: "12345",
 		Method:      "post",
-		key:    []byte(key),
+		key:         []byte(key),
 	}
 
 	p.Add("resource_link_id", "1086").
