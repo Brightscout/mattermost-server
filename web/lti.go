@@ -15,20 +15,29 @@ func (w *Web) InitLti() {
 
 func loginWithLti(c *Context, w http.ResponseWriter, r *http.Request) {
 	if !c.App.Config().LTISettings.Enable {
-		c.Err =  model.NewAppError("loginWithLti", "api.lti.disabled.app_error", nil, "", http.StatusNotImplemented)
+		c.Err = model.NewAppError("loginWithLti", "api.lti.disabled.app_error", nil, "", http.StatusNotImplemented)
 		return
 	}
 
 	// Validate request
-	lmss := c.App.Config().LTISettings.LMSs
+	lmss := c.App.Config().LTISettings.GetKnownLMSs()
 	ltiConsumerKey := r.FormValue("oauth_consumer_key")
 	var ltiConsumerSecret string
 
-	for _, lms := range lmss {
-		if lms.OAuth.ConsumerKey == ltiConsumerKey {
-			ltiConsumerSecret = lms.OAuth.ConsumerSecret
-			break
+	for _, val := range lmss {
+		// TODO: Figure out a better way to find consumer secret for multiple LMSs
+		if lms, ok := val.(model.EdxLMSSettings); ok {
+			if lms.OAuth.ConsumerKey == ltiConsumerKey {
+				ltiConsumerSecret = lms.OAuth.ConsumerSecret
+				break
+			}
 		}
+	}
+
+	if ltiConsumerSecret == "" {
+		mlog.Error("Client secret not found for consumer key: " + ltiConsumerKey)
+		c.Err = model.NewAppError("loginWithLti", "api.lti.client_secret.app_error", nil, "", http.StatusNotImplemented)
+		return
 	}
 
 	p := utils.NewProvider(ltiConsumerSecret, fmt.Sprintf("%s%s", c.GetSiteURLHeader(), c.Path))
@@ -36,7 +45,7 @@ func loginWithLti(c *Context, w http.ResponseWriter, r *http.Request) {
 	if ok, err := p.IsValid(r); err != nil || ok == false {
 		// TODO: update this based on how we handle request validation error
 		mlog.Error("Invalid LTI request: " + err.Error())
-		c.Err =  model.NewAppError("loginWithLti", "api.lti.validate.app_error", nil, "", http.StatusNotImplemented)
+		c.Err = model.NewAppError("loginWithLti", "api.lti.validate.app_error", nil, "", http.StatusNotImplemented)
 		return
 	}
 

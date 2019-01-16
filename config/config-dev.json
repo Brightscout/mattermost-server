@@ -326,8 +326,8 @@
         "LoginButtonBorderColor": "",
         "LoginButtonTextColor": ""
     },
-    "LtiSettings": {
-        "Enable": false,
+    "LTISettings": {
+        "Enable": true,
         "Lmss": [
             {
                 "Name": "Emeritus",
@@ -338,7 +338,7 @@
                 },
                 "UserChannels": {
                     "Type": "emeritus-group",
-                    "AuthorizationToken": "7357~ROt7SAzB9gjdBQQA2lI0JfpfZ4ckTxd0CYZIZwzM8qMFGjiz4SQILBObJ3NuFDuR",
+                    "AuthorizationToken": "dummy~value",
                     "ChannelList":
                     [
                         {

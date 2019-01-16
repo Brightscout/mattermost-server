@@ -10,7 +10,6 @@ import (
 
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
-
 )
 
 func TestLoginWithLTI(t *testing.T) {
@@ -18,8 +17,9 @@ func TestLoginWithLTI(t *testing.T) {
 	defer th.TearDown()
 
 	if !th.App.Config().LTISettings.Enable {
-		_, err := http.Post(ApiClient.Url+"/login/lti", "", strings.NewReader("123"))
-		assert.NotNil(t, err, "should have errored - lti turned off")
+		resp, err := http.Post(ApiClient.Url+"/login/lti", "", strings.NewReader("123"))
+		require.Nil(t, err)
+		assert.True(t, resp.StatusCode != http.StatusOK, "should have errored - lti turned off")
 		return
 	}
 
