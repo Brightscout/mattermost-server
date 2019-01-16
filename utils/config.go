@@ -640,7 +640,6 @@ func GenerateClientConfig(c *model.Config, diagnosticId string, license *model.L
 	props["PasswordRequireNumber"] = strconv.FormatBool(*c.PasswordSettings.Number)
 	props["PasswordRequireSymbol"] = strconv.FormatBool(*c.PasswordSettings.Symbol)
 	props["CustomUrlSchemes"] = strings.Join(*c.DisplaySettings.CustomUrlSchemes, ",")
-	props["LTIAuthEnabled"] = strconv.FormatBool(c.LTISettings.Enable)
 
 	if license != nil {
 		props["ExperimentalHideTownSquareinLHS"] = strconv.FormatBool(*c.TeamSettings.ExperimentalHideTownSquareinLHS)
@@ -785,6 +784,7 @@ func GenerateLimitedClientConfig(c *model.Config, diagnosticId string, license *
 	props["EnableCustomBrand"] = strconv.FormatBool(*c.TeamSettings.EnableCustomBrand)
 	props["CustomBrandText"] = *c.TeamSettings.CustomBrandText
 	props["CustomDescriptionText"] = *c.TeamSettings.CustomDescriptionText
+	props["LTIAuthEnabled"] = strconv.FormatBool(c.LTISettings.Enable)
 
 	if license != nil {
 		if *license.Features.LDAP {
