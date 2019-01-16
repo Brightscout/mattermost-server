@@ -15,7 +15,8 @@ func (w *Web) InitLti() {
 
 func loginWithLti(c *Context, w http.ResponseWriter, r *http.Request) {
 	if !c.App.Config().LTISettings.Enable {
-		c.Err = model.NewAppError("loginWithLti", "api.lti.disabled.app_error", nil, "", http.StatusNotImplemented)
+		mlog.Error("LTI login request when LTI is disabled in config.json")
+		c.Err = model.NewAppError("loginWithLti", "api.lti.login.app_error", nil, "", http.StatusNotImplemented)
 		return
 	}
 
@@ -35,8 +36,8 @@ func loginWithLti(c *Context, w http.ResponseWriter, r *http.Request) {
 	}
 
 	if ltiConsumerSecret == "" {
-		mlog.Error("Client secret not found for consumer key: " + ltiConsumerKey)
-		c.Err = model.NewAppError("loginWithLti", "api.lti.client_secret.app_error", nil, "", http.StatusNotImplemented)
+		mlog.Error("Consumer secret not found for consumer key: " + ltiConsumerKey)
+		c.Err = model.NewAppError("loginWithLti", "api.lti.login.app_error", nil, "", http.StatusNotImplemented)
 		return
 	}
 
@@ -45,7 +46,7 @@ func loginWithLti(c *Context, w http.ResponseWriter, r *http.Request) {
 	if ok, err := p.IsValid(r); err != nil || ok == false {
 		// TODO: update this based on how we handle request validation error
 		mlog.Error("Invalid LTI request: " + err.Error())
-		c.Err = model.NewAppError("loginWithLti", "api.lti.validate.app_error", nil, "", http.StatusNotImplemented)
+		c.Err = model.NewAppError("loginWithLti", "api.lti.login.app_error", nil, "", http.StatusNotImplemented)
 		return
 	}
 
