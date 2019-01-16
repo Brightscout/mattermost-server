@@ -44,7 +44,6 @@ func loginWithLti(c *Context, w http.ResponseWriter, r *http.Request) {
 	p := utils.NewProvider(ltiConsumerSecret, fmt.Sprintf("%s%s", c.GetSiteURLHeader(), c.Path))
 	p.ConsumerKey = ltiConsumerKey
 	if ok, err := p.IsValid(r); err != nil || ok == false {
-		// TODO: update this based on how we handle request validation error
 		mlog.Error("Invalid LTI request: " + err.Error())
 		c.Err = model.NewAppError("loginWithLti", "api.lti.login.app_error", nil, "", http.StatusNotImplemented)
 		return
