@@ -19,7 +19,7 @@ func TestLoginWithLTI(t *testing.T) {
 	defer th.TearDown()
 
 	pluginJson := map[string]interface{}{
-		"enable": true,
+		"enable": false,
 		"enablesignaturevalidation": true,
 		"lmss": nil,
 	}
