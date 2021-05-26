@@ -8,6 +8,8 @@ import (
 	"fmt"
 	"net/http"
 
+	"github.com/pkg/errors"
+
 	"github.com/mattermost/mattermost-server/v5/model"
 	"github.com/mattermost/mattermost-server/v5/shared/mlog"
 )
@@ -16,7 +18,7 @@ import (
 //	GetLTISettings() reads the LTI Config from Plugin Config
 //
 func (a *App) GetLTISettings() (*model.LTISettings, error) {
-	
+
 	//	Check that if a plugin with LTI_PLUGIN_ID is installed in the server.
 	var LTIConfig map[string]interface{}
 	LTIConfig, ok := a.Config().PluginSettings.Plugins[model.LTI_PLUGIN_ID]
@@ -26,12 +28,12 @@ func (a *App) GetLTISettings() (*model.LTISettings, error) {
 
 	configJson, err := json.Marshal(LTIConfig)
 	if err != nil {
-		return nil, fmt.Errorf("Error marshaling LTI Config: %s", err.Error())
+		return nil, errors.Wrap(err, "Error marshaling LTI Config: %s")
 	}
 
 	var LTISettings *model.LTISettings
 	if err = json.Unmarshal(configJson, &LTISettings); err != nil {
-		return nil, fmt.Errorf("Error unmarshaling LTI Config from json: %s", err.Error())
+		return nil, errors.Wrap(err, "Error unmarshaling LTI Config from json: %s")
 	}
 	return LTISettings, nil
 }
