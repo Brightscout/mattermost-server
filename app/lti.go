@@ -39,9 +39,6 @@ func (a *App) GetLTISettings() (*model.LTISettings, error) {
 }
 
 func (a *App) GetLMSToUse(consumerKey string) model.LMS {
-	//
-	// Get the LTI Settings from plugin config.
-	//
 	LTISettings, err := a.GetLTISettings()
 	if err != nil {
 		mlog.Error(err.Error())
