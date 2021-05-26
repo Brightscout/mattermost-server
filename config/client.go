@@ -310,13 +310,9 @@ func GenerateLimitedClientConfig(c *model.Config, telemetryID string, license *m
 	props["GuestAccountsEnforceMultifactorAuthentication"] = strconv.FormatBool(*c.GuestAccountsSettings.EnforceMultifactorAuthentication)
 
 	props["EnableSignUpWithLTI"] = strconv.FormatBool(false)
-	//
+	
 	//	Check that if LTI Plugin is installed.
-	//
 	if LTIConfig, ok := c.PluginSettings.Plugins[model.LTI_PLUGIN_ID]; ok {
-		//
-		//	Check that if LTI Authentication is enabled.
-		//
 		if LTIEnabled, ok := LTIConfig["enable"].(bool); ok {
 			props["EnableSignUpWithLTI"] = strconv.FormatBool(LTIEnabled)
 		}

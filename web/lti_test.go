@@ -24,9 +24,7 @@ func TestLoginWithLTI(t *testing.T) {
 		"lmss":                      nil,
 	}
 
-	//
 	// Add the LTI plugin settings in the testing config.
-	//
 	th.App.UpdateConfig(func(cfg *model.Config) {
 		cfg.PluginSettings.Plugins[model.LTI_PLUGIN_ID] = pluginJson
 	})

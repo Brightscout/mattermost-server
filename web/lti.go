@@ -21,9 +21,6 @@ func (w *Web) InitLti() {
 
 func loginWithLTI(c *Context, w http.ResponseWriter, r *http.Request) {
 	mlog.Debug("Received an LTI Login request")
-	//
-	// Get the LTI Settings from plugin config.
-	//
 	LTISettings, ltiErr := c.App.GetLTISettings()
 	if ltiErr != nil {
 		mlog.Error(ltiErr.Error())

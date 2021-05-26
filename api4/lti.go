@@ -20,9 +20,6 @@ func (api *API) InitLTI() {
 }
 
 func signupWithLTI(c *Context, w http.ResponseWriter, r *http.Request) {
-	//
-	// Get the LTI Settings from plugin config.
-	//
 	LTISettings, err := c.App.GetLTISettings()
 	if err != nil {
 		mlog.Error(err.Error())
